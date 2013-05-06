@@ -76,8 +76,8 @@
 
     hasColConflictAt: function(colIndex){
       var counter = 0;
-      for(var i = 0; i< this.attributes.n; i++){
-        if(this.attributes[i][colIndex]===1){
+      for(var i = 0; i< this.get('n'); i++){
+        if(this.get(i)[colIndex]===1){
           counter++;
         }
       }
@@ -93,14 +93,22 @@
     },
 
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow){
-
+      var counter = 0;
+        for(var i = 0; i < this.get('n'); i++) {
+          if(this.get(i)[majorDiagonalColumnIndexAtFirstRow+i]===1){
+            counter++;
+          }
+        }
+      return counter > 1;
     },
 
     hasAnyMajorDiagonalConflicts: function(){
       //2-n
+      var result = false;
       for (var i = 2-this.get('n'); i < this.get('n')-2; i++){
-        //stuff
+        result = result || this.hasMajorDiagonalConflictAt(i);
       }
+      return result;
     },
 
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow){
