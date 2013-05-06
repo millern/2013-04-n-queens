@@ -112,11 +112,21 @@
     },
 
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow){
-      return false; // fixme
+      var counter = 0;
+      for(var i = 0; i < this.get('n'); i++) {
+        if(this.get(i)[minorDiagonalColumnIndexAtFirstRow-i]===1){
+          counter++;
+        }
+      }
+      return counter > 1;
     },
 
     hasAnyMinorDiagonalConflicts: function(){
-      return false; // fixme
+      var result = false;
+      for (var i = 1; i < this.get('n')*2-3; i++){
+        result = result || this.hasMinorDiagonalConflictAt(i);
+      }
+      return result;
     }
 
   });
