@@ -54,31 +54,53 @@
       );
     },
 
-
     // todo: fill in all these functions - they'll help you!
 
     hasRowConflictAt: function(rowIndex){
-      return false; // fixme
+      var counter = 0;
+      _.each(this.get(rowIndex), function(item){
+         if(item == 1) {
+           counter++;
+         }
+      });
+      return counter > 1;
     },
 
     hasAnyRowConflicts: function(){
-      return false; // fixme
+      var result = false;
+      for (var i = 0; i < this.get('n'); i++) {
+        result = result || this.hasRowConflictAt(i);
+      }
+      return result;
     },
 
     hasColConflictAt: function(colIndex){
-      return false; // fixme
+      var counter = 0;
+      for(var i = 0; i< this.attributes.n; i++){
+        if(this.attributes[i][colIndex]===1){
+          counter++;
+        }
+      }
+      return counter > 1;
     },
 
     hasAnyColConflicts: function(){
-      return false; // fixme
+      var result = false;
+      for (var i = 0; i < this.get('n'); i++) {
+        result = result || this.hasColConflictAt(i);
+      }
+      return result;
     },
 
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow){
-      return false; // fixme
+
     },
 
     hasAnyMajorDiagonalConflicts: function(){
-      return false; // fixme
+      //2-n
+      for (var i = 2-this.get('n'); i < this.get('n')-2; i++){
+        //stuff
+      }
     },
 
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow){
