@@ -120,15 +120,16 @@ window.countNQueensSolutions = function(n){
   }
   var solutionCount = 0;
   var solution = [];
-  var rNQueens = function(temp){
-    var board = temp.slice(0);
+  var rNQueens = function(tempBoard){
+    var board = tempBoard.slice(0);
     for (var i = 0; i < n; i++) {
-      if(i !== 0){
-        board.pop();
-      }
+      if(i !== 0){board.pop();}
       var row = window.makeArrayOf(0,n);
       row[i]=1;
       board.push(row);
+      if(!checkQueenSolution(board.length, board)){
+        continue;
+      }
       if (board.length === n){
         if (checkQueenSolution(n, board)){
           solution.push(board.slice(0));
