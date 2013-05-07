@@ -8,15 +8,14 @@ window.makeArrayOf = function(value, length) {
   }
   return arr;
 };
+//make a custom testing solution
+//data structure can be [0 0 1] instead of the whole board...[0 1 2] represents a solution
+//short circut the for loops
+
 window.findNRooksSolution = function(n){
   var solution = [];
-  //FOR EACH STARTING POSITION IN FIRST ROW
-  //CREATE A CHESS BOARD
-  //PLACE A ROOK
-  //MAKE A RECURSIVE CALL ON THE REST OF THE BOARD
-  //IF ROW = N, CHECK FOR CORRECT SOLUTION
-
-  var rRookRowPlacer = function(board){
+  var rRookRowPlacer = function(temp){
+    var board = temp.slice(0);
     for (var i = 0; i < n; i++) {
       if(i !== 0){
         board.pop();
@@ -25,13 +24,8 @@ window.findNRooksSolution = function(n){
       row[i]=1;
       board.push(row);
       if (board.length === n){
-        console.log(board);
         if (checkSolution(board)){
-          if (n === 4){
-            debugger;
-          };
           solution.push(board.slice(0));
-          console.log(board.slice(0));
         }
         if(i == (n-1)){
           board.pop();
@@ -46,15 +40,40 @@ window.findNRooksSolution = function(n){
     var temp = new Board(matrix);
     return ! temp.hasAnyRooksConflicts();
   }
-  console.log('Single solution for ' + n + ' rooks:', solution[0]);
+  console.log('Single solution for ' + n + ' rooks:', solution);
   return solution[0];
 };
-///DEAL WITH THIS LATER
 
 
 window.countNRooksSolutions = function(n){
-  var solutionCount = undefined; //fixme
-
+  var solutionCount = 0;
+  var solution = [];
+  var rRookRowPlacer = function(temp){
+    var board = temp.slice(0);
+    for (var i = 0; i < n; i++) {
+      if(i !== 0){
+        board.pop();
+      }
+      var row = window.makeArrayOf(0,n);
+      row[i]=1;
+      board.push(row);
+      if (board.length === n){
+        if (checkSolution(board)){
+          solution.push(board.slice(0));
+          solutionCount++;
+        }
+        if(i == (n-1)){
+          board.pop();
+        }
+      } else {
+        rRookRowPlacer(board);
+      }
+    }
+  };
+  rRookRowPlacer([]);
+  function checkSolution(matrix) {
+    
+  }
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
 };
