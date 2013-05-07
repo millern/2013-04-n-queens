@@ -157,12 +157,27 @@ window.findNQueensSolution = function(n){
         }
       }
     }
+    //check for minor diagonal conflicts
+    for (i = 1; i < n*2-2; i++){
+      var counter3 = 0;
+      for(var l = 0; l < n; l++) {
+        if(matrix[l][i-l]===1){
+          counter3++;
+          if (counter3 > 1){
+            return false;
+          }
+        }
+      }
+    }
 
     //else return true
     return true;
   }
 
   console.log('Single solution for ' + n + ' queens:', solution[0]);
+  if (!solution[0]){
+    solution[0] = makeArrayOf(makeArrayOf(0,n),n);
+  }
   return solution[0];
 };
 
