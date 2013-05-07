@@ -182,7 +182,75 @@ window.findNQueensSolution = function(n){
 };
 
 window.countNQueensSolutions = function(n){
-  var solutionCount = undefined; //fixme
+  if (n===0){
+    return 1;
+  }
+  var solutionCount = 0;
+  var solution = [];
+  var rNQueens = function(temp){
+    var board = temp.slice(0);
+    for (var i = 0; i < n; i++) {
+      if(i !== 0){
+        board.pop();
+      }
+      var row = window.makeArrayOf(0,n);
+      row[i]=1;
+      board.push(row);
+      if (board.length === n){
+        if (checkSolution(board)){
+          solution.push(board.slice(0));
+          solutionCount++;
+        }
+        if(i == (n-1)){
+          board.pop();
+        }
+      } else {
+        rNQueens(board);
+      }
+    }
+  };
+  rNQueens([]);
+  function checkSolution(matrix) {
+    //check for column conflicts
+    for(var i = 0; i< n; i++){
+      var counter = 0;
+      for (var j = 0; j<n; j++){
+        if(matrix[j][i]===1){
+          counter++;
+          if (counter > 1){
+            return false;
+          }
+        }
+      }
+    }
+    //check for major diagonal conflicts
+    for (i = 1-n; i < n-1; i++){
+      var counter2 = 0;
+      for(var k = 0; k < n; k++) {
+        if(matrix[k][i+k]===1){
+          counter2++;
+          if (counter2 > 1){
+            return false;
+          }
+        }
+      }
+    }
+    //check for minor diagonal conflicts
+    for (i = 1; i < n*2-2; i++){
+      var counter3 = 0;
+      for(var l = 0; l < n; l++) {
+        if(matrix[l][i-l]===1){
+          counter3++;
+          if (counter3 > 1){
+            return false;
+          }
+        }
+      }
+    }
+
+    //else return true
+    return true;
+  }
 
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
