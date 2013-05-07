@@ -40,8 +40,18 @@ window.findNRooksSolution = function(n){
   };
   rRookRowPlacer([]);
   function checkSolution(matrix) {
-    var temp = new Board(matrix);
-    return ! temp.hasAnyRooksConflicts();
+    for(var i = 0; i< n; i++){
+      var counter = 0;
+      for (var j = 0; j<n; j++){
+        if(matrix[j][i]===1){
+          counter++;
+          if (counter > 1){
+            return false;
+          }
+        }
+      }
+    }
+    return true;
   }
   console.log('Single solution for ' + n + ' rooks:', solution[0]);
   return solution[0];
@@ -78,9 +88,6 @@ window.countNRooksSolutions = function(n){
   };
   rRookRowPlacer([]);
   function checkSolution(matrix) {
-    // var temp = new Board(matrix);
-    // return ! temp.hasAnyRooksConflicts();
-    //column test
     for(var i = 0; i< n; i++){
       var counter = 0;
       for (var j = 0; j<n; j++){
