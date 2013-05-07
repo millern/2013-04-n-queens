@@ -106,10 +106,64 @@ window.countNRooksSolutions = function(n){
 };
 
 window.findNQueensSolution = function(n){
-  var solution = undefined; //fixme
+  var solution = [];
+  var rNQueens = function(temp){
+    var board = temp.slice(0);
+    for (var i = 0; i < n; i++) {
+      if (solution[0]){
+        break;
+      }
+      if(i !== 0){
+        board.pop();
+      }
+      var row = window.makeArrayOf(0,n);
+      row[i]=1;
+      board.push(row);
+      if (board.length === n){
+        if (checkSolution(board)){
+          solution.push(board.slice(0));
+        }
+        if(i == (n-1)){
+          board.pop();
+        }
+      } else {
+        rNQueens(board);
+      }
+    }
+  };
+  rNQueens([]);
+  function checkSolution(matrix) {
+    //check for column conflicts
+    for(var i = 0; i< n; i++){
+      var counter = 0;
+      for (var j = 0; j<n; j++){
+        if(matrix[j][i]===1){
+          counter++;
+          if (counter > 1){
+            return false;
+          }
+        }
+      }
+    }
+    //check for major diagonal conflicts
+    for (i = 1-n; i < n-1; i++){
+      var counter2 = 0;
+      for(var k = 0; k < n; k++) {
+        if(matrix[k][i+k]===1){
+          counter2++;
+          if (counter2 > 1){
+            return false;
+          }
+        }
+      }
+    }
 
-  console.log('Single solution for ' + n + ' queens:', solution);
-  return solution;
+    //else return true
+    return true;
+  }
+
+  console.log('Single solution for ' + n + ' queens:', solution[0]);
+  return solution[0];
 };
 
 window.countNQueensSolutions = function(n){
