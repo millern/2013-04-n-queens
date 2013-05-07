@@ -8,7 +8,7 @@ window.makeArrayOf = function(value, length) {
   }
   return arr;
 };
-//make a custom testing solution
+
 //data structure can be [0 0 1] instead of the whole board...[0 1 2] represents a solution
 //short circut the for loops
 
@@ -27,7 +27,7 @@ window.findNRooksSolution = function(n){
       row[i]=1;
       board.push(row);
       if (board.length === n){
-        if (checkSolution(board)){
+        if (checkRookSolution(n, board)){
           solution.push(board.slice(0));
         }
         if(i == (n-1)){
@@ -39,20 +39,7 @@ window.findNRooksSolution = function(n){
     }
   };
   rRookRowPlacer([]);
-  function checkSolution(matrix) {
-    for(var i = 0; i< n; i++){
-      var counter = 0;
-      for (var j = 0; j<n; j++){
-        if(matrix[j][i]===1){
-          counter++;
-          if (counter > 1){
-            return false;
-          }
-        }
-      }
-    }
-    return true;
-  }
+
   console.log('Single solution for ' + n + ' rooks:', solution[0]);
   return solution[0];
 };
@@ -74,7 +61,7 @@ window.countNRooksSolutions = function(n){
       row[i]=1;
       board.push(row);
       if (board.length === n){
-        if (checkSolution(board)){
+        if (checkRookSolution(n, board)){
           solution.push(board.slice(0));
           solutionCount++;
         }
@@ -87,20 +74,6 @@ window.countNRooksSolutions = function(n){
     }
   };
   rRookRowPlacer([]);
-  function checkSolution(matrix) {
-    for(var i = 0; i< n; i++){
-      var counter = 0;
-      for (var j = 0; j<n; j++){
-        if(matrix[j][i]===1){
-          counter++;
-          if (counter > 1){
-            return false;
-          }
-        }
-      }
-    }
-    return true;
-  }
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
 };
@@ -120,7 +93,7 @@ window.findNQueensSolution = function(n){
       row[i]=1;
       board.push(row);
       if (board.length === n){
-        if (checkSolution(board)){
+        if (checkQueenSolution(n, board)){
           solution.push(board.slice(0));
         }
         if(i == (n-1)){
@@ -132,47 +105,6 @@ window.findNQueensSolution = function(n){
     }
   };
   rNQueens([]);
-  function checkSolution(matrix) {
-    //check for column conflicts
-    for(var i = 0; i< n; i++){
-      var counter = 0;
-      for (var j = 0; j<n; j++){
-        if(matrix[j][i]===1){
-          counter++;
-          if (counter > 1){
-            return false;
-          }
-        }
-      }
-    }
-    //check for major diagonal conflicts
-    for (i = 1-n; i < n-1; i++){
-      var counter2 = 0;
-      for(var k = 0; k < n; k++) {
-        if(matrix[k][i+k]===1){
-          counter2++;
-          if (counter2 > 1){
-            return false;
-          }
-        }
-      }
-    }
-    //check for minor diagonal conflicts
-    for (i = 1; i < n*2-2; i++){
-      var counter3 = 0;
-      for(var l = 0; l < n; l++) {
-        if(matrix[l][i-l]===1){
-          counter3++;
-          if (counter3 > 1){
-            return false;
-          }
-        }
-      }
-    }
-
-    //else return true
-    return true;
-  }
 
   console.log('Single solution for ' + n + ' queens:', solution[0]);
   if (!solution[0]){
@@ -198,7 +130,7 @@ window.countNQueensSolutions = function(n){
       row[i]=1;
       board.push(row);
       if (board.length === n){
-        if (checkSolution(board)){
+        if (checkQueenSolution(n, board)){
           solution.push(board.slice(0));
           solutionCount++;
         }
@@ -211,52 +143,57 @@ window.countNQueensSolutions = function(n){
     }
   };
   rNQueens([]);
-  function checkSolution(matrix) {
-    //check for column conflicts
-    for(var i = 0; i< n; i++){
-      var counter = 0;
-      for (var j = 0; j<n; j++){
-        if(matrix[j][i]===1){
-          counter++;
-          if (counter > 1){
-            return false;
-          }
-        }
-      }
-    }
-    //check for major diagonal conflicts
-    for (i = 1-n; i < n-1; i++){
-      var counter2 = 0;
-      for(var k = 0; k < n; k++) {
-        if(matrix[k][i+k]===1){
-          counter2++;
-          if (counter2 > 1){
-            return false;
-          }
-        }
-      }
-    }
-    //check for minor diagonal conflicts
-    for (i = 1; i < n*2-2; i++){
-      var counter3 = 0;
-      for(var l = 0; l < n; l++) {
-        if(matrix[l][i-l]===1){
-          counter3++;
-          if (counter3 > 1){
-            return false;
-          }
-        }
-      }
-    }
-
-    //else return true
-    return true;
-  }
   var endTime = new Date();
   var totalTime = endTime - startTime;
   console.log('Number of solutions for ' + n + ' queens:', solutionCount, 'in', totalTime, 'milliseconds');
   return solutionCount;
+};
 
+window.checkRookSolution = function(n, matrix) {
+  for(var i = 0; i< n; i++){
+    var counter = 0;
+    for (var j = 0; j<n; j++){
+      if(matrix[j][i]===1){
+        counter++;
+        if (counter > 1){
+          return false;
+        }
+      }
+    }
+  }
+  return true;
+};
+
+window.checkQueenSolution = function(n, matrix) {
+  if(!checkRookSolution(n, matrix)){
+    return false;
+  }
+
+  //check for major diagonal conflicts
+  for (i = 1-n; i < n-1; i++){
+    var counter2 = 0;
+    for(var k = 0; k < n; k++) {
+      if(matrix[k][i+k]===1){
+        counter2++;
+        if (counter2 > 1){
+          return false;
+        }
+      }
+    }
+  }
+  //check for minor diagonal conflicts
+  for (i = 1; i < n*2-2; i++){
+    var counter3 = 0;
+    for(var l = 0; l < n; l++) {
+      if(matrix[l][i-l]===1){
+        counter3++;
+        if (counter3 > 1){
+          return false;
+        }
+      }
+    }
+  }
+  return true;
 };
 
 // This function uses a board visualizer lets you view an interactive version of any piece matrix.
