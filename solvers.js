@@ -127,7 +127,6 @@ window.countNQueensSolutions = function(n){
       if(!checkQueenSolution(board.length, board)){continue;}
       if (board.length === n){
         checkQueenSolution(n, board) && solutionCount++;
-        i === (n-1) && board.pop();
       } else {
         rNQueens(board);
       }
