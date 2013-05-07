@@ -182,6 +182,7 @@ window.findNQueensSolution = function(n){
 };
 
 window.countNQueensSolutions = function(n){
+  var startTime = new Date();
   if (n===0){
     return 1;
   }
@@ -251,12 +252,16 @@ window.countNQueensSolutions = function(n){
     //else return true
     return true;
   }
-
-  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
+  var endTime = new Date();
+  var totalTime = endTime - startTime;
+  console.log('Number of solutions for ' + n + ' queens:', solutionCount, 'in', totalTime, 'milliseconds');
   return solutionCount;
+
 };
 
 // This function uses a board visualizer lets you view an interactive version of any piece matrix.
+//measuring speed
+//new date - new date
 
 window.displayBoard = function(matrix){
   $('body').html(
