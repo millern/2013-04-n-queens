@@ -10,7 +10,6 @@ window.makeArrayOf = function(value, length) {
 };
 
 //data structure can be [0 0 1] instead of the whole board...[0 1 2] represents a solution
-//short circut the for loops
 
 window.findNRooksSolution = function(n){
   var solution = [];
@@ -115,29 +114,20 @@ window.findNQueensSolution = function(n){
 
 window.countNQueensSolutions = function(n){
   var startTime = new Date();
-  if (n===0){
-    return 1;
-  }
+  if (n===0){return 1;} //0 queens fit on a 0x0 board 1 time
   var solutionCount = 0;
-  var solution = [];
+
   var rNQueens = function(tempBoard){
     var board = tempBoard.slice(0);
     for (var i = 0; i < n; i++) {
       if(i !== 0){board.pop();}
-      var row = window.makeArrayOf(0,n);
+      var row = makeArrayOf(0,n);
       row[i]=1;
       board.push(row);
-      if(!checkQueenSolution(board.length, board)){
-        continue;
-      }
+      if(!checkQueenSolution(board.length, board)){continue;}
       if (board.length === n){
-        if (checkQueenSolution(n, board)){
-          solution.push(board.slice(0));
-          solutionCount++;
-        }
-        if(i == (n-1)){
-          board.pop();
-        }
+        checkQueenSolution(n, board) && solutionCount++;
+        i === (n-1) && board.pop();
       } else {
         rNQueens(board);
       }
@@ -145,8 +135,7 @@ window.countNQueensSolutions = function(n){
   };
   rNQueens([]);
   var endTime = new Date();
-  var totalTime = endTime - startTime;
-  console.log('Number of solutions for ' + n + ' queens:', solutionCount, 'in', totalTime, 'milliseconds');
+  console.log('Number of solutions for ' + n + ' queens:', solutionCount, 'in', endTime - startTime, 'milliseconds');
   return solutionCount;
 };
 
