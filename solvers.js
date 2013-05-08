@@ -116,19 +116,20 @@ window.countNQueensSolutions = function(n){
   var startTime = new Date();
   if (n===0){return 1;} //0 queens fit on a 0x0 board 1 time
   var solutionCount = 0;
-
   var rNQueens = function(tempBoard){
-    var board = tempBoard.slice(0);
-    for (var i = 0; i < n; i++) {
-      if(i !== 0){board.pop();}
-      var row = makeArrayOf(0,n);
-      row[i]=1;
-      board.push(row);
-      if(!checkQueenSolution(board.length, board)){continue;}
-      if (board.length === n){
-        checkQueenSolution(n, board) && solutionCount++;
+    if(tempBoard.length === n){
+      if(checkQueenSolution(tempBoard)){
+        solutionCount++;
+      }
+      return;
+    }
+
+    for(var i = 0; i < n; i++){
+      var boardCheck = tempBoard.concat(i);
+      if (checkQueenSolution(boardCheck)){
+        rNQueens(boardCheck);
       } else {
-        rNQueens(board);
+        continue;
       }
     }
   };
@@ -138,47 +139,27 @@ window.countNQueensSolutions = function(n){
   return solutionCount;
 };
 
-window.checkRookSolution = function(n, matrix) {
-  for(var i = 0; i< n; i++){
-    var counter = 0;
-    for (var j = 0; j<n; j++){
-      if(matrix[j][i]===1){
-        counter++;
-        if (counter > 1){
-          return false;
-        }
-      }
-    }
-  }
-  return true;
+window.checkRookSolution = function(matrix) {
+  return _.uniq(matrix).length !== matrix.length ? false : true;
 };
 
-window.checkQueenSolution = function(n, matrix) {
-  if(!checkRookSolution(n, matrix)){
+window.checkQueenSolution = function(matrix) {
+  if(!checkRookSolution(matrix)){
     return false;
   }
-
-  //check for major diagonal conflicts
-  for (i = 1-n; i < n-1; i++){
-    var counter2 = 0;
-    for(var k = 0; k < n; k++) {
-      if(matrix[k][i+k]===1){
-        counter2++;
-        if (counter2 > 1){
-          return false;
-        }
+  //major diagonals
+  for(var i = 0; i < matrix.length; i++){
+    for(var j = i+1; j < matrix.length; j++){
+      if((i - j) === (matrix[i] - matrix[j])){
+        return false;
       }
     }
   }
-  //check for minor diagonal conflicts
-  for (i = 1; i < n*2-2; i++){
-    var counter3 = 0;
-    for(var l = 0; l < n; l++) {
-      if(matrix[l][i-l]===1){
-        counter3++;
-        if (counter3 > 1){
-          return false;
-        }
+  //minor diagonals
+  for(i = 0; i < matrix.length; i++){
+    for(j = i+1; j < matrix.length; j++){
+      if((i - j) === -(matrix[i] - matrix[j])){
+        return false;
       }
     }
   }
