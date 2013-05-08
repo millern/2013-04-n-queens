@@ -76,7 +76,7 @@ window.findNQueensSolution = function(n){
   var endTime = new Date();
   console.log('Single solution for ' + n + ' queens:', solution[0]);
   if (!solution[0]){
-    solution[0] = makeArrayOf(makeArrayOf(0,n),n);
+    solution[0] = [0];
   }
   return solution[0];
 };
