@@ -25,3 +25,14 @@ Number of solutions for 7 queens: 40 in 44 milliseconds solvers.js:149
 Number of solutions for 8 queens: 92 in 317 milliseconds solvers.js:149
 Number of solutions for 9 queens: 352 in 2393 milliseconds solvers.js:149
 
+Changed to single line data storage
+
+Number of solutions for 1 queens: 1 in 0 milliseconds solvers.js:136
+Number of solutions for 2 queens: 0 in 0 milliseconds solvers.js:136
+Number of solutions for 3 queens: 0 in 0 milliseconds solvers.js:136
+Number of solutions for 4 queens: 2 in 3 milliseconds solvers.js:136
+Number of solutions for 5 queens: 10 in 2 milliseconds solvers.js:136
+Number of solutions for 6 queens: 4 in 4 milliseconds solvers.js:136
+Number of solutions for 7 queens: 40 in 15 milliseconds solvers.js:136
+Number of solutions for 8 queens: 92 in 46 milliseconds solvers.js:136
+Number of solutions for 9 queens: 352 in 215 milliseconds 

@@ -118,12 +118,9 @@ window.countNQueensSolutions = function(n){
   var solutionCount = 0;
   var rNQueens = function(tempBoard){
     if(tempBoard.length === n){
-      if(checkQueenSolution(tempBoard)){
-        solutionCount++;
-      }
+      checkQueenSolution(tempBoard) && solutionCount++;
       return;
     }
-
     for(var i = 0; i < n; i++){
       var boardCheck = tempBoard.concat(i);
       if (checkQueenSolution(boardCheck)){
@@ -147,18 +144,9 @@ window.checkQueenSolution = function(matrix) {
   if(!checkRookSolution(matrix)){
     return false;
   }
-  //major diagonals
   for(var i = 0; i < matrix.length; i++){
     for(var j = i+1; j < matrix.length; j++){
-      if((i - j) === (matrix[i] - matrix[j])){
-        return false;
-      }
-    }
-  }
-  //minor diagonals
-  for(i = 0; i < matrix.length; i++){
-    for(j = i+1; j < matrix.length; j++){
-      if((i - j) === -(matrix[i] - matrix[j])){
+      if(i - j === matrix[i] - matrix[j] || i - j === -matrix[i] + matrix[j]){
         return false;
       }
     }
