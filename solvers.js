@@ -1,43 +1,28 @@
 // Write code here that will find the solution count for a board of any size.
 // hint: you'll need to do a full-search of all possible arrangements of pieces!
 // (There are also optimizations that will allow you to skip a lot of the dead search space)
-window.makeArrayOf = function(value, length) {
-  var arr = [], i = length;
-  while (i--) {
-    arr[i] = value;
-  }
-  return arr;
-};
-
-//data structure can be [0 0 1] instead of the whole board...[0 1 2] represents a solution
 
 window.findNRooksSolution = function(n){
   var solution = [];
-  var rRookRowPlacer = function(temp){
-    var board = temp.slice(0);
-    for (var i = 0; i < n; i++) {
-      if (solution[0]){
-        break;
+  var startTime = new Date();
+  if (n===0){return 1;} //0 queens fit on a 0x0 board 1 time
+  var rNRooks = function(tempBoard){
+    if(tempBoard.length === n){
+      if (checkRookSolution(tempBoard)){
+        solution.push(tempBoard.concat());
       }
-      if(i !== 0){
-        board.pop();
-      }
-      var row = window.makeArrayOf(0,n);
-      row[i]=1;
-      board.push(row);
-      if (board.length === n){
-        if (checkRookSolution(n, board)){
-          solution.push(board.slice(0));
-        }
-        if(i == (n-1)){
-          board.pop();
-        }
+      return;
+    }
+    for(var i = 0; i < n; i++){
+      var boardCheck = tempBoard.concat(i);
+      if (checkRookSolution(boardCheck)){
+        rNRooks(boardCheck);
       } else {
-        rRookRowPlacer(board);
+        continue;
       }
     }
   };
-  rRookRowPlacer([]);
+  rNRooks([]);
 
   console.log('Single solution for ' + n + ' rooks:', solution[0]);
   return solution[0];
@@ -45,66 +30,50 @@ window.findNRooksSolution = function(n){
 
 
 window.countNRooksSolutions = function(n){
-  if (n===0){
-    return 1;
-  }
+  var startTime = new Date();
+  if (n===0){return 1;} //0 queens fit on a 0x0 board 1 time
   var solutionCount = 0;
-  var solution = [];
-  var rRookRowPlacer = function(temp){
-    var board = temp.slice(0);
-    for (var i = 0; i < n; i++) {
-      if(i !== 0){
-        board.pop();
-      }
-      var row = window.makeArrayOf(0,n);
-      row[i]=1;
-      board.push(row);
-      if (board.length === n){
-        if (checkRookSolution(n, board)){
-          solution.push(board.slice(0));
-          solutionCount++;
-        }
-        if(i == (n-1)){
-          board.pop();
-        }
+  var rNRooks = function(tempBoard){
+    if(tempBoard.length === n){
+      checkRookSolution(tempBoard) && solutionCount++;
+      return;
+    }
+    for(var i = 0; i < n; i++){
+      var boardCheck = tempBoard.concat(i);
+      if (checkRookSolution(boardCheck)){
+        rNRooks(boardCheck);
       } else {
-        rRookRowPlacer(board);
+        continue;
       }
     }
   };
-  rRookRowPlacer([]);
+  rNRooks([]);
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
 };
 
 window.findNQueensSolution = function(n){
   var solution = [];
-  var rNQueens = function(temp){
-    var board = temp.slice(0);
-    for (var i = 0; i < n; i++) {
-      if (solution[0]){
-        break;
+  var startTime = new Date();
+  if (n===0){return 1;} //0 queens fit on a 0x0 board 1 time
+  var rNQueens = function(tempBoard){
+    if(tempBoard.length === n){
+      if (checkQueenSolution(tempBoard)){
+        solution.push(tempBoard.concat());
       }
-      if(i !== 0){
-        board.pop();
-      }
-      var row = window.makeArrayOf(0,n);
-      row[i]=1;
-      board.push(row);
-      if (board.length === n){
-        if (checkQueenSolution(n, board)){
-          solution.push(board.slice(0));
-        }
-        if(i == (n-1)){
-          board.pop();
-        }
+      return;
+    }
+    for(var i = 0; i < n; i++){
+      var boardCheck = tempBoard.concat(i);
+      if (checkQueenSolution(boardCheck)){
+        rNQueens(boardCheck);
       } else {
-        rNQueens(board);
+        continue;
       }
     }
   };
   rNQueens([]);
-
+  var endTime = new Date();
   console.log('Single solution for ' + n + ' queens:', solution[0]);
   if (!solution[0]){
     solution[0] = makeArrayOf(makeArrayOf(0,n),n);
