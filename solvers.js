@@ -23,9 +23,18 @@ window.findNRooksSolution = function(n){
     }
   };
   rNRooks([]);
-
-  console.log('Single solution for ' + n + ' rooks:', solution[0]);
-  return solution[0];
+  if(solution[0]){
+    solutionRet = makeEmptyMatrix(n);
+    for (var i = 0; i < n; i++){
+      for (var j = 0; j < n; j++){
+         if(solution[0][i] === j){
+          solutionRet[i][j] = 1;
+         }
+      }
+    }
+  }
+  console.log('Single solution for ' + n + ' rooks:', solutionRet);
+  return solutionRet;
 };
 
 
@@ -73,12 +82,21 @@ window.findNQueensSolution = function(n){
     }
   };
   rNQueens([]);
-  var endTime = new Date();
-  console.log('Single solution for ' + n + ' queens:', solution[0]);
-  if (!solution[0]){
-    solution[0] = [0];
+  if(solution[0]){
+    solutionRet = makeEmptyMatrix(n);
+    for (var i = 0; i < n; i++){
+      for (var j = 0; j < n; j++){
+         if(solution[0][i] === j){
+          solutionRet[i][j] = 1;
+         }
+      }
+    }
+  } else {
+    solutionRet = [];
   }
-  return solution[0];
+  var endTime = new Date();
+  console.log('Single solution for ' + n + ' queens:', solutionRet);
+  return solutionRet;
 };
 
 window.countNQueensSolutions = function(n){
@@ -134,3 +152,10 @@ window.displayBoard = function(matrix){
     }).render()
   );
 };
+window.makeEmptyMatrix = function(n){
+    return _(_.range(n)).map(function(){
+      return _(_.range(n)).map(function(){
+        return 0;
+      });
+    });
+  };
